@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choir Voice Mixer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --bg-primary: #faf9f7;
+      --bg-secondary: #f3f1ed;
+      --bg-card: #ffffff;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666;
+      --text-muted: #999;
+      --border: #e5e2dc;
+      --accent: #2d5a45;
+      --accent-light: #e8f0ec;
+      
+      --sop: #8b5cf6;
+      --sop-h: #8b5cf6;
+      --sop-l: #a78bfa;
+      --alt: #f59e0b;
+      --tenor: #10b981;
+      --bas: #3b82f6;
+      --click: #6b7280;
+      --motyw-a: #ec4899;
+      --motyw-b: #8b5cf6;
+      --motyw-c: #06b6d4;
+      --piano: #78716c;
+    }
+    
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .app-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+    
+    .song-selector {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    
+    .song-btn {
+      padding: 0.75rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: var(--bg-card);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .song-btn:hover {
+      background: var(--bg-secondary);
+    }
+    
+    .song-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    
+    .song-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .song-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.25rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.25rem;
+    }
+    
+    .song-meta {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+    
+    .mixer-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      margin-bottom: 1.5rem;
+    }
+    
+    .track {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.875rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .track:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    
+    .track:first-child {
+      padding-top: 0;
+    }
+    
+    .track.click-track {
+      border-top: 1px dashed var(--border);
+      margin-top: 0.5rem;
+      padding-top: 1rem;
+    }
+    
+    .voice-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .voice-badge.sop { background: var(--sop); }
+    .voice-badge.sop-h { background: var(--sop-h); }
+    .voice-badge.sop-l { background: var(--sop-l); }
+    .voice-badge.alt { background: var(--alt); }
+    .voice-badge.tenor { background: var(--tenor); }
+    .voice-badge.bas { background: var(--bas); }
+    .voice-badge.click { background: var(--click); }
+    .voice-badge.motyw-a { background: var(--motyw-a); }
+    .voice-badge.motyw-b { background: var(--motyw-b); }
+    .voice-badge.motyw-c { background: var(--motyw-c); }
+    .voice-badge.piano { background: var(--piano); }
+    
+    .track-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .track-name {
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    
+    .volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--bg-secondary);
+      cursor: pointer;
+    }
+    
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      cursor: grab;
+      transition: transform 0.15s ease;
+    }
+    
+    .volume-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+    
+    .track-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .volume-value {
+      font-size: 0.85rem;
+      font-weight: 500;
+      min-width: 42px;
+      text-align: right;
+      color: var(--text-secondary);
+    }
+    
+    .mute-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    
+    .mute-btn:hover {
+      background: var(--bg-secondary);
+    }
+    
+    .mute-btn.muted {
+      background: var(--text-primary);
+      border-color: var(--text-primary);
+    }
+    
+    .mute-btn svg {
+      width: 18px;
+      height: 18px;
+      color: var(--text-primary);
+    }
+    
+    .mute-btn.muted svg {
+      color: white;
+    }
+    
+    .transport {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 1.5rem 1.75rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    
+    .waveform-container {
+      position: relative;
+      height: 56px;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      margin-bottom: 1.25rem;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    
+    .waveform-bars {
+      position: absolute;
+      inset: 8px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    
+    .waveform-bar {
+      flex: 1;
+      background: var(--border);
+      border-radius: 2px;
+      transition: background 0.1s ease;
+    }
+    
+    .waveform-bar.played {
+      background: var(--accent);
+    }
+    
+    .playhead {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 2px;
+      left: 0%;
+      z-index: 10;
+      pointer-events: none;
+    }
+    
+    .time-display {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-variant-numeric: tabular-nums;
+    }
+    
+    .current-time {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    
+    .control-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+    }
+    
+    .control-btn:hover {
+      background: var(--bg-secondary);
+    }
+    
+    .control-btn svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text-primary);
+    }
+    
+    .play-btn {
+      width: 64px;
+      height: 64px;
+      background: var(--accent);
+      border: none;
+    }
+    
+    .play-btn:hover {
+      background: #234a38;
+    }
+    
+    .play-btn svg {
+      width: 24px;
+      height: 24px;
+      color: white;
+    }
+    
+    .tip-card {
+      background: var(--accent-light);
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      margin-top: 1.5rem;
+    }
+    
+    .tip-card p {
+      font-size: 0.9rem;
+      color: var(--accent);
+    }
+    
+    .tip-card strong {
+      font-weight: 600;
+    }
+    
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: opacity 0.4s ease;
+    }
+    
+    .loading-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .loading-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .loading-progress {
+      width: 200px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    
+    .loading-bar {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    
+    #mixer-container {
+      display: none;
+    }
+    
+    #mixer-container.loaded {
+      display: block;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.5rem 1rem;
+      }
+      
+      .song-title {
+        font-size: 1.75rem;
+      }
+      
+      .track {
+        grid-template-columns: 40px 1fr auto;
+        gap: 0.75rem;
+      }
+      
+      .voice-badge {
+        width: 40px;
+        height: 40px;
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading-overlay" id="loading">
+    <div class="loading-text">Ładowanie utworu...</div>
+    <div class="loading-progress">
+      <div class="loading-bar" id="loadingBar"></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <header>
+      <h1 class="app-title">🎵 Choir Voice Mixer</h1>
+      <div class="song-selector" id="songSelector"></div>
+    </header>
+    
+    <div id="mixer-container">
+      <div class="song-header">
+        <h2 class="song-title" id="songTitle"></h2>
+        <p class="song-meta" id="songMeta"></p>
+      </div>
+      
+      <div class="mixer-card" id="tracksContainer"></div>
+      
+      <div class="transport">
+        <div class="time-display">
+          <span class="current-time" id="currentTime">0:00</span>
+          <span class="total-time" id="totalTime">0:00</span>
+        </div>
+        
+        <div class="waveform-container" id="waveform">
+          <div class="waveform-bars" id="waveformBars"></div>
+          <div class="playhead" id="playhead"></div>
+        </div>
+        
+        <div class="controls">
+          <button class="control-btn" id="rewindBtn" aria-label="Cofnij 10s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5V1L7 6l5 5V7a6 6 0 1 1-6 6"/>
+              <text x="12" y="14" font-size="6" fill="currentColor" stroke="none" text-anchor="middle">10</text>
+            </svg>
+          </button>
+          <button class="control-btn play-btn" id="playBtn" aria-label="Odtwórz">
+            <svg viewBox="0 0 24 24" fill="currentColor" id="playIcon">
+              <polygon points="6,4 20,12 6,20"/>
+            </svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" id="pauseIcon" style="display:none;">
+              <rect x="5" y="4" width="4" height="16"/>
+              <rect x="15" y="4" width="4" height="16"/>
+            </svg>
+          </button>
+          <button class="control-btn" id="forwardBtn" aria-label="Przewiń 10s">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5V1l5 5-5 5V7a6 6 0 1 0 6 6"/>
+              <text x="12" y="14" font-size="6" fill="currentColor" stroke="none" text-anchor="middle">10</text>
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <div class="tip-card">
+        <p><strong>Wskazówka:</strong> Zwiększ głośność swojego głosu do 100%, a pozostałe ustaw na ~30% aby słyszeć harmonię w tle.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // KONFIGURACJA UTWORÓW JEST W PLIKU songs.json
+    // Aby dodać nowy utwór: edytuj songs.json i wrzuć pliki mp3 do audio/<id>/
+    // index.html nie wymaga modyfikacji przy dodawaniu utworów
+    // ============================================================
+    
+    let SONGS = {};
+    let audioContext = null;
+    let currentSong = null;
+    let voices = {};
+    let isPlaying = false;
+    let duration = 0;
+    let loadedCount = 0;
+    
+    const loadingOverlay = document.getElementById('loading');
+    const loadingBar = document.getElementById('loadingBar');
+    const mixerContainer = document.getElementById('mixer-container');
+    const tracksContainer = document.getElementById('tracksContainer');
+    const songSelector = document.getElementById('songSelector');
+    const songTitle = document.getElementById('songTitle');
+    const songMeta = document.getElementById('songMeta');
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+    const currentTimeEl = document.getElementById('currentTime');
+    const totalTimeEl = document.getElementById('totalTime');
+    const playhead = document.getElementById('playhead');
+    const waveform = document.getElementById('waveform');
+    const waveformBars = document.getElementById('waveformBars');
+    
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return mins + ':' + (secs < 10 ? '0' : '') + secs;
+    }
+    
+    function generateWaveform() {
+      waveformBars.innerHTML = '';
+      for (let i = 0; i < 60; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'waveform-bar';
+        const height = 20 + Math.random() * 60;
+        bar.style.height = height + '%';
+        waveformBars.appendChild(bar);
+      }
+    }
+    
+    function updateProgress() {
+      const firstVoice = Object.values(voices)[0];
+      if (!firstVoice || !firstVoice.audio) return;
+      
+      const current = firstVoice.audio.currentTime;
+      const progress = (current / duration) * 100;
+      
+      currentTimeEl.textContent = formatTime(current);
+      playhead.style.left = progress + '%';
+      
+      const bars = waveformBars.children;
+      const playedBars = Math.floor((progress / 100) * bars.length);
+      for (let i = 0; i < bars.length; i++) {
+        bars[i].classList.toggle('played', i < playedBars);
+      }
+      
+      if (isPlaying) {
+        requestAnimationFrame(updateProgress);
+      }
+    }
+    
+    function renderTracks(song) {
+      tracksContainer.innerHTML = '';
+      
+      song.tracks.forEach(track => {
+        const trackEl = document.createElement('div');
+        trackEl.className = 'track' + (track.isClick ? ' click-track' : '');
+        trackEl.dataset.voice = track.id;
+        
+        trackEl.innerHTML = `
+          <div class="voice-badge ${track.badgeClass}">${track.badge}</div>
+          <div class="track-info">
+            <span class="track-name">${track.name}</span>
+            <input type="range" class="volume-slider" min="0" max="100" value="${track.defaultVolume}">
+          </div>
+          <div class="track-controls">
+            <span class="volume-value">${track.defaultVolume}%</span>
+            <button class="mute-btn" aria-label="Wycisz">
+              <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              </svg>
+              <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                <line x1="23" y1="9" x2="17" y2="15"/>
+                <line x1="17" y1="9" x2="23" y2="15"/>
+              </svg>
+            </button>
+          </div>
+        `;
+        
+        tracksContainer.appendChild(trackEl);
+      });
+    }
+    
+    function renderSongSelector() {
+      songSelector.innerHTML = '';
+      Object.values(SONGS).forEach((song, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'song-btn' + (idx === 0 ? ' active' : '');
+        btn.dataset.song = song.id;
+        btn.textContent = song.title;
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.song-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          loadSong(song.id);
+        });
+        songSelector.appendChild(btn);
+      });
+    }
+    
+    function cleanupAudio() {
+      isPlaying = false;
+      playIcon.style.display = 'block';
+      pauseIcon.style.display = 'none';
+      
+      Object.values(voices).forEach(v => {
+        if (v.audio) {
+          v.audio.pause();
+          v.audio.currentTime = 0;
+          v.audio.src = '';
+        }
+      });
+      voices = {};
+    }
+    
+    function loadSong(songId) {
+      cleanupAudio();
+      
+      const song = SONGS[songId];
+      currentSong = songId;
+      loadedCount = 0;
+      
+      loadingOverlay.classList.remove('hidden');
+      loadingBar.style.width = '0%';
+      mixerContainer.classList.remove('loaded');
+      
+      songTitle.textContent = song.title;
+      songMeta.textContent = song.meta;
+      renderTracks(song);
+      generateWaveform();
+      
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      
+      const totalTracks = song.tracks.length;
+      
+      song.tracks.forEach(track => {
+        const audio = new Audio(track.file);
+        audio.crossOrigin = 'anonymous';
+        
+        audio.addEventListener('canplaythrough', () => {
+          loadedCount++;
+          loadingBar.style.width = (loadedCount / totalTracks * 100) + '%';
+          
+          if (loadedCount === totalTracks) {
+            duration = audio.duration;
+            totalTimeEl.textContent = formatTime(duration);
+            
+            setTimeout(() => {
+              loadingOverlay.classList.add('hidden');
+              mixerContainer.classList.add('loaded');
+            }, 300);
+          }
+        }, { once: true });
+        
+        audio.addEventListener('ended', () => {
+          isPlaying = false;
+          playIcon.style.display = 'block';
+          pauseIcon.style.display = 'none';
+          Object.values(voices).forEach(v => {
+            v.audio.currentTime = 0;
+          });
+          updateProgress();
+        });
+        
+        const source = audioContext.createMediaElementSource(audio);
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = track.defaultVolume / 100;
+        source.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        voices[track.id] = {
+          audio: audio,
+          gainNode: gainNode,
+          volume: track.defaultVolume / 100
+        };
+        
+        audio.load();
+      });
+      
+      attachTrackListeners();
+    }
+    
+    function attachTrackListeners() {
+      document.querySelectorAll('.track').forEach(track => {
+        const voiceKey = track.dataset.voice;
+        const slider = track.querySelector('.volume-slider');
+        const valueDisplay = track.querySelector('.volume-value');
+        const muteBtn = track.querySelector('.mute-btn');
+        const iconUnmuted = muteBtn.querySelector('.icon-unmuted');
+        const iconMuted = muteBtn.querySelector('.icon-muted');
+        let previousVolume = parseInt(slider.value);
+        
+        slider.addEventListener('input', (e) => {
+          const value = parseInt(e.target.value);
+          valueDisplay.textContent = value + '%';
+          
+          if (voices[voiceKey] && voices[voiceKey].gainNode) {
+            voices[voiceKey].gainNode.gain.value = value / 100;
+          }
+          
+          if (value === 0) {
+            muteBtn.classList.add('muted');
+            iconUnmuted.style.display = 'none';
+            iconMuted.style.display = 'block';
+          } else {
+            muteBtn.classList.remove('muted');
+            iconUnmuted.style.display = 'block';
+            iconMuted.style.display = 'none';
+            previousVolume = value;
+          }
+        });
+        
+        muteBtn.addEventListener('click', () => {
+          const isMuted = muteBtn.classList.toggle('muted');
+          
+          if (isMuted) {
+            previousVolume = parseInt(slider.value) || 80;
+            slider.value = 0;
+            valueDisplay.textContent = '0%';
+            iconUnmuted.style.display = 'none';
+            iconMuted.style.display = 'block';
+            if (voices[voiceKey] && voices[voiceKey].gainNode) {
+              voices[voiceKey].gainNode.gain.value = 0;
+            }
+          } else {
+            slider.value = previousVolume;
+            valueDisplay.textContent = previousVolume + '%';
+            iconUnmuted.style.display = 'block';
+            iconMuted.style.display = 'none';
+            if (voices[voiceKey] && voices[voiceKey].gainNode) {
+              voices[voiceKey].gainNode.gain.value = previousVolume / 100;
+            }
+          }
+        });
+      });
+    }
+    
+    function togglePlay() {
+      if (audioContext && audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+      
+      if (isPlaying) {
+        Object.values(voices).forEach(v => v.audio.pause());
+        isPlaying = false;
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+      } else {
+        Object.values(voices).forEach(v => v.audio.play());
+        isPlaying = true;
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+        updateProgress();
+      }
+    }
+    
+    function seek(time) {
+      const clampedTime = Math.max(0, Math.min(duration, time));
+      Object.values(voices).forEach(v => {
+        v.audio.currentTime = clampedTime;
+      });
+      updateProgress();
+    }
+    
+    playBtn.addEventListener('click', togglePlay);
+    
+    document.getElementById('rewindBtn').addEventListener('click', () => {
+      const firstVoice = Object.values(voices)[0];
+      if (firstVoice) seek(firstVoice.audio.currentTime - 10);
+    });
+    
+    document.getElementById('forwardBtn').addEventListener('click', () => {
+      const firstVoice = Object.values(voices)[0];
+      if (firstVoice) seek(firstVoice.audio.currentTime + 10);
+    });
+    
+    waveform.addEventListener('click', (e) => {
+      const rect = waveform.getBoundingClientRect();
+      const percent = (e.clientX - rect.left) / rect.width;
+      seek(percent * duration);
+    });
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlay();
+      } else if (e.code === 'ArrowLeft') {
+        const firstVoice = Object.values(voices)[0];
+        if (firstVoice) seek(firstVoice.audio.currentTime - 5);
+      } else if (e.code === 'ArrowRight') {
+        const firstVoice = Object.values(voices)[0];
+        if (firstVoice) seek(firstVoice.audio.currentTime + 5);
+      }
+    });
+    
+    // Załaduj konfigurację z songs.json i uruchom aplikację
+    async function init() {
+      try {
+        const response = await fetch('songs.json');
+        const config = await response.json();
+        
+        // Konwertuj tablicę songs do obiektu indeksowanego po id
+        SONGS = {};
+        config.songs.forEach(song => {
+          SONGS[song.id] = song;
+        });
+        
+        renderSongSelector();
+        
+        // Załaduj pierwszy utwór z listy
+        const firstSongId = config.songs[0]?.id;
+        if (firstSongId) {
+          loadSong(firstSongId);
+        }
+      } catch (e) {
+        console.error('Nie udało się załadować songs.json:', e);
+        loadingOverlay.querySelector('.loading-text').textContent = 'Błąd ładowania konfiguracji';
+      }
+    }
+    
+    init();
+  </script>
+</body>
+</html>

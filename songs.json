@@ -1,0 +1,39 @@
+{
+  "songs": [
+    {
+      "id": "lion",
+      "title": "The Lion Sleeps Tonight",
+      "meta": "SATB + click track",
+      "audioOffset": 1,
+      "tracks": [
+        { "id": "sopran", "name": "Sopran", "badge": "S", "badgeClass": "sop", "file": "audio/lion/sopran.mp3", "defaultVolume": 80 },
+        { "id": "alt", "name": "Alt", "badge": "A", "badgeClass": "alt", "file": "audio/lion/alt.mp3", "defaultVolume": 80 },
+        { "id": "tenor", "name": "Tenor", "badge": "T", "badgeClass": "tenor", "file": "audio/lion/tenor.mp3", "defaultVolume": 80 },
+        { "id": "bas", "name": "Bas", "badge": "B", "badgeClass": "bas", "file": "audio/lion/bas.mp3", "defaultVolume": 80 },
+        { "id": "click", "name": "Click track", "badge": "●", "badgeClass": "click", "file": "audio/lion/click.mp3", "defaultVolume": 50, "isClick": true }
+      ]
+    },
+    {
+      "id": "lollipop",
+      "title": "Lollipop",
+      "meta": "SSAB",
+      "tracks": [
+        { "id": "sop_h", "name": "Sopran wysoki", "badge": "S1", "badgeClass": "sop-h", "file": "audio/lollipop/sop_h.mp3", "defaultVolume": 80 },
+        { "id": "sop_l", "name": "Sopran niski", "badge": "S2", "badgeClass": "sop-l", "file": "audio/lollipop/sop_l.mp3", "defaultVolume": 80 },
+        { "id": "alt", "name": "Alt", "badge": "A", "badgeClass": "alt", "file": "audio/lollipop/alt.mp3", "defaultVolume": 80 },
+        { "id": "bas", "name": "Bas", "badge": "B", "badgeClass": "bas", "file": "audio/lollipop/bas.mp3", "defaultVolume": 80 }
+      ]
+    },
+    {
+      "id": "django",
+      "title": "Hallo Django",
+      "meta": "Kanon • 3 motywy + piano",
+      "tracks": [
+        { "id": "motyw_a", "name": "Motyw A", "badge": "A", "badgeClass": "motyw-a", "file": "audio/django/motyw_a.mp3", "defaultVolume": 80 },
+        { "id": "motyw_b", "name": "Motyw B", "badge": "B", "badgeClass": "motyw-b", "file": "audio/django/motyw_b.mp3", "defaultVolume": 80 },
+        { "id": "motyw_c", "name": "Motyw C", "badge": "C", "badgeClass": "motyw-c", "file": "audio/django/motyw_c.mp3", "defaultVolume": 80 },
+        { "id": "piano", "name": "Piano", "badge": "🎹", "badgeClass": "piano", "file": "audio/django/piano.mp3", "defaultVolume": 35, "isClick": true }
+      ]
+    }
+  ]
+}
