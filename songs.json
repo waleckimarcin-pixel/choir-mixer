@@ -34,6 +34,17 @@
         { "id": "motyw_c", "name": "Motyw C", "badge": "C", "badgeClass": "motyw-c", "file": "audio/django/motyw_c.mp3", "defaultVolume": 80 },
         { "id": "piano", "name": "Piano", "badge": "🎹", "badgeClass": "piano", "file": "audio/django/piano.mp3", "defaultVolume": 35, "isClick": true }
       ]
+    },
+    {
+      "id": "cichosza",
+      "title": "Cichosza",
+      "meta": "SAB",
+      "audioOffset": 0,
+      "tracks": [
+        { "id": "sopran", "name": "Sopran", "badge": "S", "badgeClass": "sop", "file": "audio/cichosza/sopran.mp3", "defaultVolume": 80 },
+        { "id": "alt", "name": "Alt", "badge": "A", "badgeClass": "alt", "file": "audio/cichosza/alt.mp3", "defaultVolume": 80 },
+        { "id": "bas", "name": "Bas", "badge": "B", "badgeClass": "bas", "file": "audio/cichosza/bas.mp3", "defaultVolume": 80 }
+      ]
     }
   ]
 }
