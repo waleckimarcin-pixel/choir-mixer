@@ -45,6 +45,17 @@
         { "id": "alt", "name": "Alt", "badge": "A", "badgeClass": "alt", "file": "audio/cichosza/alt.mp3", "defaultVolume": 80 },
         { "id": "bas", "name": "Bas", "badge": "B", "badgeClass": "bas", "file": "audio/cichosza/bas.mp3", "defaultVolume": 80 }
       ]
+    },
+    {
+      "id": "bella_ciao",
+      "title": "Bella Ciao (szkic)",
+      "meta": "SAB",
+      "audioOffset": 0,
+      "tracks": [
+        { "id": "sopran", "name": "Sopran", "badge": "S", "badgeClass": "sop", "file": "audio/bella_ciao/sopran.mp3", "defaultVolume": 80 },
+        { "id": "alt", "name": "Alt", "badge": "A", "badgeClass": "alt", "file": "audio/bella_ciao/alt.mp3", "defaultVolume": 80 },
+        { "id": "bas", "name": "Bas", "badge": "B", "badgeClass": "bas", "file": "audio/bella_ciao/bas.mp3", "defaultVolume": 80 }
+      ]
     }
   ]
 }
