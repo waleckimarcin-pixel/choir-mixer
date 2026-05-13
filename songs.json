@@ -68,6 +68,18 @@
         { "id": "alt", "name": "Alt", "badge": "A", "badgeClass": "alt", "file": "audio/dni_ktorych/alt.mp3", "defaultVolume": 80 },
         { "id": "bas", "name": "Bas", "badge": "B", "badgeClass": "bas", "file": "audio/dni_ktorych/bas.mp3", "defaultVolume": 80 }
       ]
+    },
+    {
+      "id": "hcts",
+      "title": "Here Comes the Sun",
+      "meta": "SAB + click track",
+      "audioOffset": 0,
+      "tracks": [
+        { "id": "sopran", "name": "Sopran", "badge": "S", "badgeClass": "sop", "file": "audio/hcts/sopran.mp3", "defaultVolume": 80 },
+        { "id": "alt", "name": "Alt", "badge": "A", "badgeClass": "alt", "file": "audio/hcts/alt.mp3", "defaultVolume": 80 },
+        { "id": "bas", "name": "Bas", "badge": "B", "badgeClass": "bas", "file": "audio/hcts/bas.mp3", "defaultVolume": 80 },
+        { "id": "click", "name": "Click track", "badge": "●", "badgeClass": "click", "file": "audio/hcts/click.mp3", "defaultVolume": 50, "isClick": true }
+      ]
     }
   ]
 }
