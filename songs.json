@@ -80,6 +80,16 @@
         { "id": "bas", "name": "Bas", "badge": "B", "badgeClass": "bas", "file": "audio/hcts/bas.mp3", "defaultVolume": 80 },
         { "id": "click", "name": "Click track", "badge": "●", "badgeClass": "click", "file": "audio/hcts/click.mp3", "defaultVolume": 50, "isClick": true }
       ]
+    },
+    {
+      "id": "my_wroclawianie",
+      "title": "My Wrocławianie",
+      "meta": "Dwa głosy równe",
+      "audioOffset": 0,
+      "tracks": [
+        { "id": "glos_1", "name": "Głos 1", "badge": "1", "badgeClass": "motyw-a", "file": "audio/my_wroclawianie/glos_1.mp3", "defaultVolume": 80 },
+        { "id": "glos_2", "name": "Głos 2", "badge": "2", "badgeClass": "motyw-b", "file": "audio/my_wroclawianie/glos_2.mp3", "defaultVolume": 80 }
+      ]
     }
   ]
 }
