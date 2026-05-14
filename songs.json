@@ -47,17 +47,6 @@
       ]
     },
     {
-      "id": "bella_ciao",
-      "title": "Bella Ciao (szkic)",
-      "meta": "SAB",
-      "audioOffset": 0,
-      "tracks": [
-        { "id": "sopran", "name": "Sopran", "badge": "S", "badgeClass": "sop", "file": "audio/bella_ciao/sopran.mp3", "defaultVolume": 80 },
-        { "id": "alt", "name": "Alt", "badge": "A", "badgeClass": "alt", "file": "audio/bella_ciao/alt.mp3", "defaultVolume": 80 },
-        { "id": "bas", "name": "Bas", "badge": "B", "badgeClass": "bas", "file": "audio/bella_ciao/bas.mp3", "defaultVolume": 80 }
-      ]
-    },
-    {
       "id": "dni_ktorych",
       "title": "Dni których nie znamy (szkic)",
       "meta": "Solo sopran + SAB",
@@ -89,6 +78,17 @@
       "tracks": [
         { "id": "glos_1", "name": "Głos 1", "badge": "1", "badgeClass": "motyw-a", "file": "audio/my_wroclawianie/glos_1.mp3", "defaultVolume": 80 },
         { "id": "glos_2", "name": "Głos 2", "badge": "2", "badgeClass": "motyw-b", "file": "audio/my_wroclawianie/glos_2.mp3", "defaultVolume": 80 }
+      ]
+    },
+    {
+      "id": "bella_ciao_sab",
+      "title": "Bella Ciao",
+      "meta": "SAB",
+      "audioOffset": 0,
+      "tracks": [
+        { "id": "sopran", "name": "Sopran", "badge": "S", "badgeClass": "sop", "file": "audio/bella_ciao_sab/sopran.mp3", "defaultVolume": 80 },
+        { "id": "alt", "name": "Alt", "badge": "A", "badgeClass": "alt", "file": "audio/bella_ciao_sab/alt.mp3", "defaultVolume": 80 },
+        { "id": "bas", "name": "Bas", "badge": "B", "badgeClass": "bas", "file": "audio/bella_ciao_sab/bas.mp3", "defaultVolume": 80 }
       ]
     }
   ]
