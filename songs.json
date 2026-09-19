@@ -90,6 +90,17 @@
         { "id": "alt", "name": "Alt", "badge": "A", "badgeClass": "alt", "file": "audio/bella_ciao_sab/alt.mp3", "defaultVolume": 80 },
         { "id": "bas", "name": "Bas", "badge": "B", "badgeClass": "bas", "file": "audio/bella_ciao_sab/bas.mp3", "defaultVolume": 80 }
       ]
+    },
+    {
+      "id": "sweet_dreams",
+      "title": "Sweet Dreams",
+      "meta": "SATB",
+      "tracks": [
+        { "id": "sopran", "name": "Sopran", "badge": "S", "badgeClass": "sop", "file": "audio/sweet_dreams/sopran.mp3", "defaultVolume": 80 },
+        { "id": "alt", "name": "Alt", "badge": "A", "badgeClass": "alt", "file": "audio/sweet_dreams/alt.mp3", "defaultVolume": 80 },
+        { "id": "tenor", "name": "Tenor", "badge": "T", "badgeClass": "tenor", "file": "audio/sweet_dreams/tenor.mp3", "defaultVolume": 80 },
+        { "id": "bas", "name": "Bas", "badge": "B", "badgeClass": "bas", "file": "audio/sweet_dreams/bas.mp3", "defaultVolume": 80 }
+      ]
     }
   ]
 }
